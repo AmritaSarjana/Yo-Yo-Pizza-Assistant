@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/bee17751-1797-4852-918a-9e87eddbaa63/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/amritaChatBot",
+    "appService.deploySubpath": ""
+}
