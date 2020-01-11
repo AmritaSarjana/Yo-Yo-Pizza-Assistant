@@ -20,6 +20,8 @@ const itemMap = {
     3: 'Italian Pizza'
 };
 
+const orderStatus = ['your order is being prepared', 'your order is in your way']
+
 // Defines a bot for filling a user profile.
 class CustomPromptBot extends ActivityHandler {
     constructor(conversationState, userState) {
@@ -35,9 +37,11 @@ class CustomPromptBot extends ActivityHandler {
         this.onMessage(async (turnContext, next) => {
             const flow = await this.conversationFlow.get(turnContext, { lastQuestionAsked: question.itemNumber, details: {} });
             const profile = await this.userProfile.get(turnContext, {});
-
-            await CustomPromptBot.fillOutUserProfile(flow, profile, turnContext);
-
+            if(turnContext.activity.text === 'track'){
+                await turnContext.sendActivity(orderStatus[Math.floor(Math.random()*orderStatus.length)]);
+            } else {
+                await CustomPromptBot.fillOutUserProfile(flow, profile, turnContext);
+            }
             // By calling next() you ensure that the next BotHandler is run.
             await next();
         });
@@ -79,7 +83,7 @@ class CustomPromptBot extends ActivityHandler {
             if (isNaN(itemNumber) || !itemMap[itemNumber]) {
                 await turnContext.sendActivity('Please enter valid input');
             } else {
-                await turnContext.sendActivity("Let's get started. What is your name?");
+                await turnContext.sendActivity("Please enter your name?");
                 flow.lastQuestionAsked = question.name;
                 flow.details = { ...details, itemNumber };
             }
@@ -118,6 +122,7 @@ class CustomPromptBot extends ActivityHandler {
             flow.details = { ...details, address: input };
             var value = await this.saveOder(flow.details);
             await turnContext.sendActivity(`Your Order of ${ itemMap[value.itemNumber] } is Placed with id ${ value._id }, will be ready in 30min.`);
+            await turnContext.sendActivity('Thanks for choosing us!, Enjoy your food, please enter \'track\' if you want to check your food status.');
             flow.lastQuestionAsked = question.none;
             break;
         }
