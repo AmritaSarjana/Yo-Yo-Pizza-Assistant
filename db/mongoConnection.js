@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/chatBot', { useNewUrlParser: true });
+mongoose.connect('c+srv://Amrita:wH9gbcIbNddFVWXx@cluster0-oeilr.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true });
 module.exports = mongoose;
